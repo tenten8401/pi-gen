@@ -1,0 +1,14 @@
+# RPiKit Forwarding Rules for Hotspot
+*filter
+:INPUT ACCEPT [320:21440]
+:FORWARD ACCEPT [0:0]
+-A FORWARD -i wlan_st -o wlan_ap -m state --state RELATED,ESTABLISHED -j ACCEPT
+-A FORWARD -i wlan_ap -o wlan_st -j ACCEPT
+COMMIT
+
+*nat
+:PREROUTING ACCEPT [0:0]
+:INPUT ACCEPT [0:0]
+:OUTPUT ACCEPT [100:6700]
+-A POSTROUTING -o wlan_st -j MASQUERADE
+COMMIT
